@@ -2,25 +2,91 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Add styles made with Mapbox Studio using styleLayer</title>
-<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
-<style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
+	<title>Leaflet Crosshairs</title>
+
+	<!-- Include meta tag to ensure proper rendering and touch zooming -->
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<!-- Include the jQuery library -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Include jQuery Mobile stylesheets -->
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+	<!-- Include the jQuery Mobile library -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+
+  <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+  <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
+	<style>
+	body {
+		padding: 0;
+		margin: 0;
+	}
+        html, body, #map {
+            height: 100%;
+            width:100%;
+        }
+        #metamap {
+            width: 100%;
+            height: 300px;
+        }
+        #crosshair {
+            position: relative;
+            z-index: 10;
+            height: 200px;
+            vertical-align: middle;
+        }
+	#crosshair img {
+		position: absolute;
+		margin: 0;
+		top: 50%;
+		left: 50%;
+		margin-right: -50%;
+		transform: translate(-50%, -50%);
+	}
+	</style>
 </head>
 <body>
-<div id='map'></div>
+    <div id="metamap">
+        <div id="map">
+            <div id="crosshair"><img class="crosshair" src=crosshair.png /></div>
+        </div>
+    </div>
+    <br />
+    <hr />
+    Latitude: <input type="text" id="txtLatitude" />
+    <br /><br />
+    Longitude: <input type="text" id="txtLongitude" />
+
 
 <script>
-L.mapbox.accessToken = 'pk.eyJ1IjoiY2xldmVsYW5kLW1ldHJvcGFya3MiLCJhIjoiWHRKaDhuRSJ9.FGqNSOHwiCr2dmTH2JTMAA';
-var map = L.mapbox.map('map')
-    .setView([38.97416, -95.23252], 15);
+  L.mapbox.accessToken = 'pk.eyJ1IjoiY2xldmVsYW5kLW1ldHJvcGFya3MiLCJhIjoiWHRKaDhuRSJ9.FGqNSOHwiCr2dmTH2JTMAA';
+  var map = L.mapbox.map('map')
+      .setView([38.97416, -95.23252], 15);
+  
+  // Use styleLayer to add a Mapbox style created in Mapbox Studio
+  L.mapbox.styleLayer('mapbox://styles/mapbox/emerald-v8').addTo(map);
+  
+  // Now a function to populate our form with latitude and longitude values
+  function onMapMove(e) {
+      // txtLatitude.val(map.getCenter());
+      var locale = map.getCenter();
+      $('#txtLatitude').val(locale.lat);
+      $('#txtLongitude').val(locale.lng);
+  }
 
-// Use styleLayer to add a Mapbox style created in Mapbox Studio
-L.mapbox.styleLayer('mapbox://styles/mapbox/emerald-v8').addTo(map);
+  // Boilerplate...
+  function onLocationError(e) {
+      alert(e.message);
+  }
+  // When the map moves we run our function up above
+  map.on('move', onMapMove);
+  // Boilerplate
+  map.on('locationerror', onLocationError);
+  
+  // When we load the map, we should zoom to our current position using device geolocation
+  map.locate({ setView: true, maxZoom: 20 });
+
 </script>
 </body>
 </html>
