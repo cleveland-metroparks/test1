@@ -60,12 +60,12 @@
 
 
 <script>
-  L.mapbox.accessToken = 'pk.eyJ1IjoiY2xldmVsYW5kLW1ldHJvcGFya3MiLCJhIjoiWHRKaDhuRSJ9.FGqNSOHwiCr2dmTH2JTMAA';
+  L.mapbox.accessToken = 'pk.eyJ1IjoiY2xldmVsYW5kLW1ldHJvcGFya3MiLCJhIjoiY2lsdWI2NndjMDE4cnZka3NpNXZwZnNiaSJ9.Pv2uRstAQcCq5EGTqK4o6A';
   var map = L.mapbox.map('map')
       .setView([38.97416, -95.23252], 15);
   
   // Use styleLayer to add a Mapbox style created in Mapbox Studio
-  L.mapbox.styleLayer('mapbox://styles/mapbox/emerald-v8').addTo(map);
+  L.mapbox.styleLayer('mapbox://styles/cleveland-metroparks/ciksmx4re004w9flx99488j4e').addTo(map);
   
   // Now a function to populate our form with latitude and longitude values
   function onMapMove(e) {
